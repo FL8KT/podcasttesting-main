@@ -1,7 +1,12 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import EnhancedLandingPageComponent from '@/components/enhanced-landing-page'
+import dynamic from 'next/dynamic'
+
+const EnhancedLandingPageComponent = dynamic(
+  () => import('@/components/enhanced-landing-page'),
+  { ssr: false }
+)
 
 export default function Home() {
   const router = useRouter()

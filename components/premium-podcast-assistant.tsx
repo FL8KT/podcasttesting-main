@@ -115,7 +115,9 @@ const PremiumPodcastAssistant: React.FC = () => {
   }, [controls])
 
   useEffect(() => {
-    localStorage.setItem('podcastNotes', JSON.stringify(notes))
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('podcastNotes', JSON.stringify(notes))
+    }
   }, [notes])
 
   useEffect(() => {

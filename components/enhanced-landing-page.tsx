@@ -293,11 +293,13 @@ const EnhancedLandingPageComponent: React.FC<EnhancedLandingPageComponentProps> 
   const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.8]);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
+    if (typeof window !== 'undefined') {
+      const handleScroll = () => {
+        setIsScrolled(window.scrollY > 50)
+      }
+      window.addEventListener('scroll', handleScroll)
+      return () => window.removeEventListener('scroll', handleScroll)
     }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   useEffect(() => {
@@ -305,23 +307,27 @@ const EnhancedLandingPageComponent: React.FC<EnhancedLandingPageComponentProps> 
   }, [controls])
 
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
+    if (typeof window !== 'undefined') {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
   };
 
   const scrollToSection = (event: MouseEvent<HTMLAnchorElement>, sectionId: string) => {
     event.preventDefault();
-    const section = document.getElementById(sectionId);
-    const header = document.querySelector('header');
-    if (section && header) {
-      const headerHeight = header.getBoundingClientRect().height;
-      const sectionTop = section.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-      window.scrollTo({
-        top: sectionTop,
-        behavior: 'smooth'
-      });
+    if (typeof window !== 'undefined') {
+      const section = document.getElementById(sectionId);
+      const header = document.querySelector('header');
+      if (section && header) {
+        const headerHeight = header.getBoundingClientRect().height;
+        const sectionTop = section.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+        window.scrollTo({
+          top: sectionTop,
+          behavior: 'smooth'
+        });
+      }
     }
   };
 
